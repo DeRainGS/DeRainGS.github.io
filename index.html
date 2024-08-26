@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bootstrap-4.4.1.css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/dics.original.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeRainGS: Gaussian Splatting for Enhanced Scene Reconstruction in Rainy Environments</title>
+    <meta name="description" content="WildGaussians paper. Official web with qualitative comparisons, links to the source code, and additional materials.">
+    <meta name="keywords" content="3dgs,nerf,official,code" />
+    <meta name="author" content="Shuhong Liu" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/dist/tabler-icons.min.css" rel="stylesheet">
+    <script src="event_handler.js"></script>
+    <script src="dics.original.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <span class="title-main"><img src="/images/title_icon.png" style="margin-right: -12px; vertical-align: bottom; margin-top: -4px; width: 60px; height: 60px;" />
+          <span style="margin-left: -12px;">eRainGS</span></span>
+        <span class="title-small">Gaussian Splatting for Enhanced Scene Reconstruction in Rainy Environments</span>
+      </h1>
+    </header>
+    <div class="authors">
+      <div class="author">
+        <span class="author-name">
+          <a href="https://scholar.google.com/citations?user=MkLtMR4AAAAJ">Shuhong Liu</a>
+        </span>
+        <span class="author-affiliation">The University of Tokyo</span>
+      </div>
+      <div class="author">
+        <span class="author-name">
+          <a href="https://cschenxiang.github.io/">Xiang Chen</a>
+        </span>
+        <span class="author-affiliation">Nanjing University of Science and Technology</span>
+      </div>
+      <div class="author">
+        <span class="author-name">
+          <a href="https://dblp.org/pid/99/4827-4.html">Hongming Chen</a>
+        </span>
+        <span class="author-affiliation">Dalian Maritime University</span>
+      </div>
+      <div class="author">
+        <span class="author-name">
+          <a>Quanfeng Xu</a>
+        </span>
+        <span class="author-affiliation">University of Chinese Academy of Sciences</span>
+      </div>
+      <div class="author">
+        <span class="author-name">
+          <a href="https://scholar.google.com.hk/citations?user=l8tia5AAAAAJ">Mingrui Li</a>
+        </span>
+        <span class="author-affiliation">Dalian University of Technology</span>
+      </div>
+    </div>
+    <div class="links">
+      <a class="button" href="https://arxiv.org/abs/2408.11540"><i class="ti ti-file-type-pdf"></i> Arxiv</a>
+      <a class="button" href=""><i class="fas fa-database" style="margin-right: 10px;"></i>Dataset (comming soon)</a>
+    </div>
+    <style>
+      .video.teaser-video::before {
+        padding-bottom: 50%;
+      }
+    </style>
+    <video class="video" style="aspect-ratio: 1920/1080" loop muted autoplay>
+      <source src="/videos/DeRainGS_cover.webm" type="video/webm">
+      <source src="/videos/DeRainGS_cover.mp4" type="video/mp4">
+    </video>
+    <p class="justify" style="font-size: 1rem;margin: 0 0 0.4rem 0; text-align-last: left">
+    <strong style="font-weight: bold;">DeRainGS</strong> is designed for the task of <strong style="font-weight: bold;">3D Reconstruction in Rainy Environments (3DRRE)</strong>, aiming to reconstruct clear scenes in adverse weather conditions affected by raindrops and rain streaks.
+    </p>
+
+    <section class="abstract">
+      <h2>Abstract</h2>
+      <p>
+        Reconstruction under adverse rainy conditions poses significant challenges due to reduced visibility and the distortion of visual perception. These conditions can severely impair the quality of geometric maps, which is essential for applications ranging from autonomous planning to environmental monitoring. In response to these challenges, this study introduces the novel task of 3D Reconstruction in Rainy Environments (3DRRE), specifically designed to address the complexities of reconstructing 3D scenes under rainy conditions. To benchmark this task, we construct the HydroViews dataset that comprises a diverse collection of both synthesized and real-world scene images characterized by various intensities of rain streaks and raindrops. Furthermore, we propose DeRainGS, the first 3DGS method tailored for reconstruction in adverse rainy environments. Extensive experiments across a wide range of rain scenarios demonstrate that our method delivers state-of-the-art performance.
+    </section>
+    <section style="text-align: justify;">
+      <h2>HydroViews Dataset</h2>
+      <p>
+      Our HydroViews dataset combines synthesized rain effects and real-world rainy scenes to provide comprehensive coverage of common rainy scenarios in real environments. Using a motion blur technique, we synthesize rain streaks to replicate the natural dynamics of rain, while raindrops are rendered with realistic transparency using Blender's fluid motion model. We also collect real-world collections of rainy scenes using a SONY-A7R3 camera, capturing images at a rate of one frame per second from various evening settings in Tokyo to enhance the visibility of rain streaks. Privacy is ensured by manually removing all identifiable personal elements from these scenes.
+      <figure style="margin: 0">
+        <img src="./images/sup-dataset-rad.png" alt="HydroViews raindrops" style="width: 100%; margin: 1em auto 0.3em auto; display: block;" />
+        <figcaption>
+        Visualization of the synthesized <strong style="font-weight: bold;">raindrops</strong> of our HydroViews dataset. Each scene features three distinct patterns of raindrops. The figures display several selected scenes, from left to right, including bicycle, bonsai, counter, garden, room, and stump, originally captured in <a href="https://jonbarron.info/mipnerf360/">MipNeRF360</a> (Barron, et al.).
+        </figcaption>
+      </figure>
+      <figure style="margin: 0">
+        <img src="./images/sup-dataset-ras.png" alt="HydroViews rain streaks" style="width: 100%; margin: 1em auto 0.3em auto; display: block;" />
+        <figcaption>
+        Visualization of the synthesized <strong style="font-weight: bold;">rain streaks</strong> of our HydroViews dataset. Each scene features three distinct patterns of rain streaks. The figures display several selected scenes, from left to right, including bicycle, garden, stump, horse, train, and truck, originally captured in <a href="https://jonbarron.info/mipnerf360/">MipNeRF360</a> (Barron, et al.) and <a href="https://www.tanksandtemples.org/">Tank and Temples benchmark</a> (Knapitsch, et al.).
+        </figcaption>
+      </figure>
+    </section>
+    
+    <section style="text-align: justify;">
+      <h2>DeRainGS Pipeline</h2>
+      <p>
+        
+    <figure style="margin: 0">
+      <img src="images/pipeline_figure-web.png" alt="DeRainGS overview" style="width: 100%; margin: 1em auto 0.3em auto; display: block;" />
+      <figcaption>
+      <strong style="font-weight: bold;">Left (rainy image enhancement network):</strong> To enhance the robustness of the deraining model across different scenes, we model complex rain distribution by combining local and non-local information. The enhancement network is pretrained before being applied to a scene and provide enhanced images to guide subsequent scene reconstruction.
+      <strong style="font-weight: bold;">Right (occlusion masking module):</strong> We utilize an unsupervised learning module to predict the occlusion masks to handle rain-induced artifacts. 
+      </figcaption>
+    </figure>
+    </section>
+
+    <section style="text-align: justify;">
+      <h2>Comparisons on Synthesized Rainy Scenes</h2>
+      <p>
+      We compare DeRainGS with previous occlusion-free reconstruction and deraining baseline methods, including <a href="https://github.com/kwea123/nerf_pl/tree/nerfw">NeRF-W</a> (Martin-Brualla, et al.), <a href="https://github.com/yunhaoli2020/DerainNeRF">DerainNeRF</a> (Li, et al.), <a href="https://github.com/jkulhanek/wild-gaussians">WildGaussians</a> (Kulhanek, et al.), and <a href="https://github.com/EastbeanZhang/Gaussian-Wild">GS-W</a> (Zhang, et al.), on the synthesized scenes of our HydroViews dataset.
+      <figure style="margin: 0">
+        <img src="images/sup-rad-compare.png" alt="rad compare of HydroViews" style="width: 100%; margin: 1em auto 0.3em auto; display: block;" />
+        <figcaption>
+        The visualization compares the rendering outcomes of DeRainGS with baseline methods on selected <strong style="font-weight: bold;">raindrop scenes</strong>.
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="images/sup-ras-compare.png" alt="ras compare of HydroViews" style="width: 100%; margin: 1em auto 0.3em auto; display: block;" />
+        <figcaption>
+        The visualization compares the rendering outcomes of DeRainGS with baseline methods on selected <strong style="font-weight: bold;">rain steak scenes</strong>.
+        </figcaption>
+      </figure>
+    </section>
+    
+    <section style="text-align: justify;">
+      <h2>NVS on Synthesized Rainy Scenes</h2>
+      <p>
+      The visualizations below present synthesized videos from selected scenes featuring conditions of either rain streaks or raindrops. These compare the DeRainGS method with the <a href="https://github.com/graphdeco-inria/gaussian-splatting3DGS">vanilla 3DGS</a> approach (Kerbl, et al.), showing how conventional reconstruction techniques often struggle with distortions and mist-induced occlusions caused by rain.
+      </p>
+      <figure>
+        <div class="video-wrapper">
+          <video class="video-compare" style="aspect-ratio: 1440/1080" loop muted>
+            <source src="/videos/bicycle_streak1.webm" type="video/webm">
+            <source src="/videos/bicycle_streak1.mp4" type="video/mp4">
+          </video>
+        </div>
+      </figure>
+      <figure>
+        <div class="video-wrapper">
+          <video class="video-compare" style="aspect-ratio: 1440/1080" loop muted>
+            <source src="/videos/stump_streak1.webm" type="video/webm">
+            <source src="/videos/stump_streak1.mp4" type="video/mp4">
+          </video>
+        </div>
+      </figure>
+      <figure>
+        <div class="video-wrapper">
+          <video class="video-compare" style="aspect-ratio: 1440/1080" loop muted>
+            <source src="/videos/garden_drop10.webm" type="video/webm">
+            <source src="/videos/garden_drop10.mp4" type="video/mp4">
+          </video>
+        </div>
+      </figure>
+      <figure>
+        <div class="video-wrapper">
+          <video class="video-compare" style="aspect-ratio: 1440/1080" loop muted>
+            <source src="/videos/room_drop16.webm" type="video/webm">
+            <source src="/videos/room_drop16.mp4" type="video/mp4">
+          </video>
+        </div>
+      </figure>
+    </section>
+    <section style="text-align: justify;">
+      <h2>Comparisons on Real-world Rainy Scenes</h2>
+      <p class="justify">
+        We demonstrate that our method can effectively generalize to real-world scenes, and compare it to the baseline methods mentioned above. The real-world scenes showing below are collected in our HydroViews dataset.
+      </p>
+      <div class="container">
+        <ul class="nav nav-tabs nav-fill nav-justified" id="realworld-3d-filter">
+            <li class="nav-item">
+              <a class="nav-link active" onclick="realworld3DEvent(0)">ABC-Mart</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="realworld3DEvent(1)">Sushi House</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="realworld3DEvent(2)">Izakaya</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="realworld3DEvent(3)">Park</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="realworld3DEvent(4)">Subway Station</a>
+            </li>
+        </ul>
+        <div class="b-dics" style="width: 1000px; font-weight: 600;">
+            <img src="/images/realworld/mart0006_nerfw.png" alt="NeRF-W">
+            <img src="/images/realworld/mart0006_denerf.png" alt="DerainNeRF">
+            <img src="/images/realworld/mart0006_wildgs.png" alt="WildGaussians">
+            <img src="/images/realworld/mart0006_gsw.png" alt="GS-W">
+            <img src="/images/realworld/mart0006_our.png" alt="Ours">
+        </div>
+    </section>
+    
+    <section style="text-align: justify;">
+      <h2>Acknowledgements</h2>
+      <p class="justify">
+        This website's template was designed based on the <a href='https://wild-gaussians.github.io/'>WildGaussians's page</a>. The video comparison tool is from <a href='https://dorverbin.github.io/refnerf/'>Ref-NeRF</a>, and the image comparison tool is from <a href='https://research.nvidia.com/labs/dir/neuralangelo/'>Neuralangelo</a>. The 3DGS viewer was developed using <a href='https://github.com/Florian-Barthel/splatviz'>splatviz</a>. We extend our sincere gratitude for their exceptional work and open-sourced codes. DeRainGS is built on the foundation of <a href='https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/'>3DGS</a>; please adhere to the 3DGS license. We are thankful to all the authors for their outstanding contributions.
+      </p>
+    </section>
+    <section class="citation">
+      <h2>Citation</h2>
+      <span>If you find our work helpful, please kindly cite us using the following reference:</span>
+      <pre><code>@article{liu2024deraings,
+  title={DeRainGS: Gaussian Splatting for Enhanced Scene Reconstruction in Rainy Environments},
+  author={Liu, Shuhong and Chen, Xiang and Chen, Hongming and Xu, Quanfeng and Li, Mingrui},
+  journal={arXiv preprint arXiv:2408.11540},
+  year={2024}
+}</code></pre>
+    </section>
+    <script src="/scripts.js"></script>
+  </body>
+</html>
